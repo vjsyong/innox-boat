@@ -4,6 +4,14 @@
 #include <Arduino.h>
 #include <WiFi.h>
 
+
+// ---------------------------------------------------------------------------
+// DO NOT TOUCH THIS FILE! — it's a simple wrapper around WiFi.softAP() to manage our AP
+
+// THIS IS OUT OF SCOPE FOR STUDENTS
+// ---------------------------------------------------------------------------
+
+
 class APManager {
 public:
   APManager();

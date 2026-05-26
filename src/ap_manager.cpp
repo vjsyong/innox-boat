@@ -1,5 +1,12 @@
 #include "ap_manager.h"
 
+
+// ---------------------------------------------------------------------------
+// DO NOT TOUCH THIS FILE! — it's a simple wrapper around WiFi.softAP() to manage our AP
+
+// THIS IS OUT OF SCOPE FOR STUDENTS
+// ---------------------------------------------------------------------------
+
 // ---------------------------------------------------------------------------
 // Constructor — generates an SSID from the MAC and defaults to open AP on ch 0
 // ---------------------------------------------------------------------------
