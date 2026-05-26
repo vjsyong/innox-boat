@@ -121,6 +121,33 @@ void onMotorCommand(char motor, int speed) {
 }
 
 // ---------------------------------------------------------------------------
+// Startup chime — plays a short descending harmony on boot
+// ---------------------------------------------------------------------------
+void playStartupChime() {
+  chime.startStep();
+  chime.addToStep(&motorA, NOTE_G4, 50);     // G4
+  chime.addToStep(&motorB, NOTE_E4, 50);     // E4  —  minor 3rd below
+  chime.endStep(200);
+  chime.startStep();
+  chime.addToStep(&motorA, NOTE_F4, 50);     // F4
+  chime.addToStep(&motorB, NOTE_D4, 50);     // D4  —  minor 3rd below
+  chime.endStep(200);
+  chime.startStep();
+  chime.addToStep(&motorA, NOTE_E4, 50);     // E4
+  chime.addToStep(&motorB, NOTE_C4, 50);     // C4  —  major 3rd below
+  chime.endStep(600);
+  chime.startStep();
+  chime.addToStep(&motorA, NOTE_G4, 50);     // G4
+  chime.addToStep(&motorB, NOTE_E4, 50);     // E4  —  minor 3rd below
+  chime.endStep(600);
+  chime.startStep();
+  chime.addToStep(&motorA, NOTE_C5, 50);     // C5
+  chime.addToStep(&motorB, NOTE_G4, 50);     // G4  —  perfect 4th below
+  chime.endStep(600);
+  chime.play();
+}
+
+// ---------------------------------------------------------------------------
 // Setup & Loop
 // ---------------------------------------------------------------------------
 void setup() {
@@ -128,7 +155,7 @@ void setup() {
 
   pinMode(LED_A, OUTPUT);
   pinMode(LED_B, OUTPUT);
-  digitalWrite(LED_A, HIGH);   // LED on during startup
+  digitalWrite(LED_A, LOW);    // both LEDs start OFF
   digitalWrite(LED_B, LOW);
 
   // Brief USB CDC wait (250 ms is usually enough on CDC-with-wait-loop)
@@ -145,29 +172,9 @@ void setup() {
 
   setupBoatController();
 
-  // Startup chime: motorA = melody, motorB = harmony (mostly a third below)
-  //        Melody       Harmony
-  chime.startStep();
-  chime.addToStep(&motorA, NOTE_G4, 80);     // G4
-  chime.addToStep(&motorB, NOTE_E4, 65);     // E4  —  minor 3rd below
-  chime.endStep(400);
-  chime.startStep();
-  chime.addToStep(&motorA, NOTE_F4, 80);     // F4
-  chime.addToStep(&motorB, NOTE_D4, 65);     // D4  —  minor 3rd below
-  chime.endStep(400);
-  chime.startStep();
-  chime.addToStep(&motorA, NOTE_E4, 80);     // E4
-  chime.addToStep(&motorB, NOTE_C4, 65);     // C4  —  major 3rd below
-  chime.endStep(400);
-  chime.startStep();
-  chime.addToStep(&motorA, NOTE_G4, 80);     // G4
-  chime.addToStep(&motorB, NOTE_E4, 65);     // E4  —  minor 3rd below
-  chime.endStep(600);
-  chime.startStep();
-  chime.addToStep(&motorA, NOTE_C5, 80);     // C5
-  chime.addToStep(&motorB, NOTE_G4, 65);     // G4  —  perfect 4th below
-  chime.endStep(600);
-  chime.play();
+  digitalWrite(LED_A, HIGH);   // LED on during startup chime
+  playStartupChime();
+  digitalWrite(LED_A, LOW);    // startup chime scheduled, LED off
 
   // === MIDI song easter egg ===
   // Uncomment the block below to play a converted MIDI song instead of the
@@ -179,10 +186,10 @@ void setup() {
   // chime.loadSong(&songData, trackMap);
   // chime.play();
 
+  digitalWrite(LED_A, LOW);    // startup chime scheduled, LED off
+
   // The banner will keep repeating every 3 s in loopBoatController() until
   // a client connects, so you never miss the SSID/IP even with USB CDC lag.
-
-  digitalWrite(LED_A, LOW);
 }
 
 void loop() {

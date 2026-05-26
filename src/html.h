@@ -93,11 +93,17 @@ const char INDEX_HTML[] PROGMEM = R"rawliteral(
     left: 6px;
     right: 6px;
     height: 20px;
+    top: 130px;              /* centre of a 280px track */
     background: #ddd;
     border-radius: 12px;
     box-shadow: 0 2px 6px rgba(0,0,0,0.4);
     transition: top 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
     pointer-events: none;
+  }
+  @media (max-width: 400px) {
+    .slider-thumb {
+      top: 100px;            /* centre of a 220px track */
+    }
   }
   .slider-track.dragging .slider-thumb {
     transition: none;
@@ -208,6 +214,11 @@ const char INDEX_HTML[] PROGMEM = R"rawliteral(
     ws.onclose = function() {
       statusEl.textContent = 'Disconnected — reconnecting...';
       statusEl.classList.remove('connected');
+      motorsEnabled = false;
+      setSlidersEnabled(false);
+      startBtn.textContent = '⏻ START MOTORS';
+      startBtn.classList.remove('active');
+      startBtn.disabled = false;
       scheduleReconnect();
     };
     ws.onerror = function() { ws.close(); };
@@ -263,6 +274,9 @@ const char INDEX_HTML[] PROGMEM = R"rawliteral(
       thumb.style.top = topPx + 'px';
       speedEl.textContent = speed;
     }
+
+    // Initialise thumb to centre (speed 0)
+    updateThumb(0);
 
     // --- Mouse handlers (single cursor — use activeTrack) ---
     function onMouseDown(e) {

@@ -47,6 +47,7 @@ public:
     ledcSetup(channel2, DEF_FREQ, PWM_RES);
     ledcAttachPin(pin1, channel1);
     ledcAttachPin(pin2, channel2);
+    stop();    // ensure pins start LOW, no stray signals
   }
 
   // Change PWM frequency for both channels (e.g. for musical chime notes)
