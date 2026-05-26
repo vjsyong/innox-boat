@@ -7,21 +7,66 @@ microcontroller to drive a twin-motor RC boat over Wi-Fi.
 
 ## Quick Start
 
-1. **Connect the board** — Plug the Seeed XIAO ESP32C3 into USB.
-2. **Open the project** — Open this folder in VS Code with PlatformIO installed.
-3. **Build and upload:**
-   ```bash
-   pio run --target upload --upload-port COM9
-   ```
-   *(adjust `COM9` to whatever port your board appears on)*
-4. **Open the Serial Monitor** (to see debug messages):
-   ```bash
-   pio device monitor --port COM9 --baud 115200
-   ```
-5. **Connect to the boat** — Join the Wi-Fi network `InnoX-Boat-XXXX`
-   and open **http://192.168.4.1** in your browser.
-6. **Tap START** — You'll hear a chime from the motors, then you can use
-   the throttle sliders to control them.
+### 1. Connect the board
+Plug the Seeed XIAO ESP32C3 into your computer with a USB cable.
+
+### 2. Find your board's COM port number
+
+This is the #1 thing students get stuck on — here's how to find it:
+
+**On Windows (most common):**
+1. Press **Windows + X** → select **Device Manager**
+2. Expand the **Ports (COM & LPT)** section
+3. Look for something like **"USB Serial Device (COM5)"** or **"CP2102N USB to UART Bridge (COM7)"**
+4. That **COM number** (e.g. `COM5`, `COM7`, `COM12`) is your board's port
+5. If you don't see it: try a different USB cable (some are charge-only!), or install the CP2102N driver
+
+**On macOS:**
+The port will look like `/dev/cu.usbserial-XXXXXXXX` or `/dev/tty.usbserial-XXXXXXXX`.
+Run `ls /dev/cu.usb*` or `ls /dev/tty.usb*` in Terminal to find it.
+
+**On Linux:**
+The port will look like `/dev/ttyUSB0` or `/dev/ttyACM0`. Run `ls /dev/ttyUSB* /dev/ttyACM*` to see it.
+
+### 3. Open the project
+Open this folder in VS Code with **PlatformIO** installed.
+
+### 4. Build and upload (send your code to the board)
+
+**Option A — From VS Code (recommended):**
+- Click the **→ (arrow)** icon in the PlatformIO blue status bar at the bottom
+- Or press Ctrl+Shift+P → type "PlatformIO: Upload" → press Enter
+- PlatformIO usually auto-detects the port — if it asks, select your COM port
+
+**Option B — From the terminal (if VS Code auto-detect fails):**
+Replace `COM5` with **your** COM port number (from step 2):
+```bash
+pio run --target upload --upload-port COM5
+```
+*(On macOS/Linux, use `/dev/cu.usbserial-XXX` or `/dev/ttyUSB0` instead of `COM5`)*
+
+**If the upload fails:**
+- "Failed to connect" → Check your COM port number in Device Manager
+- "Access denied" → Close any other program (like the Arduino IDE) that might be using that port
+- Still stuck? → Try a different USB cable, or hold down the **B (RESET)** button on the board while uploading
+
+### 5. Open the Serial Monitor (to see debug messages)
+
+```bash
+pio device monitor --port COM5 --baud 115200
+```
+*(Replace `COM5` with your COM port — same number from step 2)*
+
+> **💡 Tip:** If you see garbled text (like `��␀␀␀`), the baud rate is wrong — make sure `--baud 115200` matches the `monitor_speed` in `platformio.ini`.
+
+### 6. Connect to the boat
+
+Join the Wi-Fi network **`InnoX-Boat-XXXX`** (the XXXX is unique to your board).
+Open your browser and go to **http://192.168.4.1**
+
+### 7. Tap START
+
+You'll hear a chime from the motors, then you can use the throttle sliders to control them.
 
 ---
 
