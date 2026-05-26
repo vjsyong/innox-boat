@@ -34,7 +34,7 @@ private:
   int           _noteDuty;
 
   static constexpr int PWM_RES  = 8;
-  static constexpr int DEF_FREQ = 5000;
+  static constexpr int DEF_FREQ = 20000;
 
 public:
   Motor(int p1, int p2)
