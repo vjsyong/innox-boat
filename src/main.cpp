@@ -15,8 +15,28 @@ ChimePlayer chime;
 //  ✏️  TASK 1: Play a chime when START is pressed
 // ===========================================================================
 void onStartMotors() {
-  // ✏️  Write your chime here. See README.md for step-by-step examples.
-  //     Queue notes with chime.add() / chime.startStep(), then chime.play().
+  // SOLUTION: Play a fun ascending fanfare on both motors
+  chime.startStep();
+  chime.addToStep(&motorA, NOTE_C4, 80);
+  chime.addToStep(&motorB, NOTE_E4, 60);
+  chime.endStep(200);
+
+  chime.startStep();
+  chime.addToStep(&motorA, NOTE_E4, 80);
+  chime.addToStep(&motorB, NOTE_G4, 60);
+  chime.endStep(200);
+
+  chime.startStep();
+  chime.addToStep(&motorA, NOTE_G4, 80);
+  chime.addToStep(&motorB, NOTE_C5, 60);
+  chime.endStep(200);
+
+  chime.startStep();
+  chime.addToStep(&motorA, NOTE_C5, 100);
+  chime.addToStep(&motorB, NOTE_E5, 70);
+  chime.endStep(400);
+
+  chime.play();
 
   Serial.println("[Motor] Chime started — motors enabled");
 }
@@ -35,11 +55,17 @@ void onMotorCommand(char motor, int speed) {
   //     speed == 0 →  m->stop()            + LED off
 
   if (speed > 0) {
-
+    m->forward(speed);
+    digitalWrite(ledPin, HIGH);
+    Serial.printf("Motor %c → FWD  speed=%d\n", motor, speed);
   } else if (speed < 0) {
-
+    m->backward(-speed);
+    digitalWrite(ledPin, HIGH);
+    Serial.printf("Motor %c → BWD  speed=%d\n", motor, -speed);
   } else {
-
+    m->stop();
+    digitalWrite(ledPin, LOW);
+    Serial.printf("Motor %c → STOP\n", motor);
   }
 }
 
